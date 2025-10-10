@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import { X, Play, ChevronDown, ChevronUp } from 'lucide-react';
+import { X, Play } from 'lucide-react';
 import './App.css';
 
 function App() {
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [activeGrade, setActiveGrade] = useState(null);
-  const [expandedSemester, setExpandedSemester] = useState({});
 
   const videoData = {
     elementary4: {
@@ -752,101 +751,89 @@ function App() {
     setSelectedVideo(null);
   };
 
-  const toggleSemester = (semester) => {
-    setExpandedSemester((prev) => ({
-      ...prev,
-      [semester]: !prev[semester],
-    }));
-  };
-
   const currentData = activeGrade ? videoData[activeGrade] : null;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50">
       <div className="max-w-6xl mx-auto p-6">
         {/* Header */}
-        <div className="text-center mb-12 mt-12">
+        <div className="text-center mb-12 mt-8">
           <img
             src="/able-logo.png"
             alt="able Education"
             className="mx-auto mb-4"
-            style={{ height: '35px' }}
+            style={{ height: '45px' }}
           />
           <div className="w-32 h-px bg-gray-300 mx-auto mb-4"></div>
           <h1 className="text-3xl font-bold text-gray-800 mb-2">
             옥동 에이블 수학학원
           </h1>
-          <p className="text-gray-600">개념영상 학습 시스템</p>
+          <p className="text-gray-600 text-sm">개념영상 학습 시스템</p>
         </div>
 
         {/* Grade Tabs */}
-        <div className="flex flex-wrap justify-center gap-2 mb-8">
-          {Object.entries(videoData).map(([key, data]) => (
-            <button
-              key={key}
-              onClick={() => {
-                setActiveGrade(key);
-                setExpandedSemester({});
-              }}
-              className={`px-6 py-3 rounded-lg font-semibold transition-all ${
-                activeGrade === key
-                  ? 'bg-indigo-600 text-white shadow-lg'
-                  : 'bg-white text-gray-700 hover:bg-indigo-100'
-              }`}
-            >
-              {data.name}
-            </button>
-          ))}
+        <div className="bg-white rounded-xl shadow-md p-4 mb-8">
+          <div className="flex flex-wrap justify-center gap-3">
+            {Object.entries(videoData).map(([key, data]) => (
+              <button
+                key={key}
+                onClick={() => setActiveGrade(key)}
+                className={`px-5 py-2.5 rounded-lg font-medium transition-all border-2 ${
+                  activeGrade === key
+                    ? 'bg-indigo-600 text-white border-indigo-600 shadow-md'
+                    : 'bg-white text-gray-700 border-gray-200 hover:border-indigo-300 hover:bg-indigo-50'
+                }`}
+              >
+                {data.name}
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* Video Lists */}
         {currentData && (
           <div className="space-y-6">
             {Object.entries(currentData.semesters).map(([semester, videos]) => (
-              <div
-                key={semester}
-                className="bg-white rounded-lg shadow-md overflow-hidden"
-              >
-                <button
-                  onClick={() => toggleSemester(semester)}
-                  className="w-full flex items-center justify-between p-6 hover:bg-gray-50 transition-colors"
-                >
-                  <h2 className="text-2xl font-bold text-gray-800">
-                    {semester}
-                  </h2>
-                  {expandedSemester[semester] ? (
-                    <ChevronUp className="w-6 h-6 text-gray-600" />
-                  ) : (
-                    <ChevronDown className="w-6 h-6 text-gray-600" />
-                  )}
-                </button>
-
-                {expandedSemester[semester] && (
-                  <div className="px-6 pb-6">
-                    <div className="border-t-2 border-indigo-200 pt-4"></div>
-                    <div className="grid gap-3">
-                      {videos.map((video, idx) => (
-                        <button
-                          key={idx}
-                          onClick={() => handleVideoClick(video)}
-                          className="flex items-center justify-between p-4 bg-gray-50 hover:bg-indigo-50 rounded-lg transition-colors group"
-                        >
-                          <span className="text-left text-gray-700 group-hover:text-indigo-700 font-medium">
-                            {video.title}
-                          </span>
-                          <Play className="w-5 h-5 text-indigo-600 group-hover:text-indigo-800" />
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                )}
+              <div key={semester} className="bg-white rounded-lg shadow-md p-6">
+                <h2 className="text-2xl font-bold text-gray-800 mb-4 pb-3 border-b-2 border-indigo-200">
+                  {semester}
+                </h2>
+                <div className="grid gap-3">
+                  {videos.map((video, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => handleVideoClick(video)}
+                      className="flex items-center justify-between p-4 bg-gray-50 hover:bg-indigo-50 rounded-lg transition-colors group"
+                    >
+                      <span className="text-left text-gray-700 group-hover:text-indigo-700 font-medium">
+                        {video.title}
+                      </span>
+                      <Play className="w-5 h-5 text-indigo-600 group-hover:text-indigo-800 flex-shrink-0 ml-3" />
+                    </button>
+                  ))}
+                </div>
               </div>
             ))}
           </div>
         )}
 
         {!activeGrade && (
-          <div className="text-center py-16">
+          <div className="text-center py-20 bg-white rounded-lg shadow-md">
+            <div className="text-gray-400 mb-3">
+              <svg
+                className="w-16 h-16 mx-auto"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+                />
+              </svg>
+            </div>
             <p className="text-gray-500 text-lg">학년을 선택해주세요</p>
           </div>
         )}
@@ -862,13 +849,13 @@ function App() {
             className="bg-white rounded-lg max-w-4xl w-full overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between p-4 border-b">
-              <h3 className="text-xl font-bold text-gray-800">
+            <div className="flex items-center justify-between p-4 border-b bg-gray-50">
+              <h3 className="text-lg font-bold text-gray-800">
                 {selectedVideo.title}
               </h3>
               <button
                 onClick={closeModal}
-                className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                className="p-2 hover:bg-gray-200 rounded-full transition-colors"
               >
                 <X className="w-6 h-6" />
               </button>
