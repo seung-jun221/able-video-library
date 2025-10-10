@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { X, Play } from 'lucide-react';
+import { X, Play, ChevronDown, ChevronUp } from 'lucide-react';
 import './App.css';
 
 function App() {
   const [selectedVideo, setSelectedVideo] = useState(null);
-  const [activeGrade, setActiveGrade] = useState('elementary4');
+  const [activeGrade, setActiveGrade] = useState(null);
+  const [expandedSemester, setExpandedSemester] = useState({});
 
   const videoData = {
     elementary4: {
@@ -127,8 +128,8 @@ function App() {
         ],
       },
     },
-    middle1: {
-      name: '중학교 1학년',
+    middle1_1: {
+      name: '중1-1',
       semesters: {
         '중1-1': [
           { title: '1. 소수와 합성수', url: 'https://youtu.be/csy0RfZiPBQ' },
@@ -231,6 +232,11 @@ function App() {
             url: 'https://youtu.be/Z9ymrUK__9A',
           },
         ],
+      },
+    },
+    middle1_2: {
+      name: '중1-2',
+      semesters: {
         '중1-2': [
           { title: '1. 점선면', url: 'https://youtu.be/dNsRy_cb1fM' },
           {
@@ -344,8 +350,8 @@ function App() {
         ],
       },
     },
-    middle2: {
-      name: '중학교 2학년',
+    middle2_1: {
+      name: '중2-1',
       semesters: {
         '중2-1': [
           {
@@ -450,6 +456,11 @@ function App() {
             url: 'https://youtu.be/Dh6jvMSqCk4',
           },
         ],
+      },
+    },
+    middle2_2: {
+      name: '중2-2',
+      semesters: {
         '중2-2': [
           {
             title: '1. 이등변삼각형의 성질',
@@ -552,8 +563,8 @@ function App() {
         ],
       },
     },
-    middle3: {
-      name: '중학교 3학년',
+    middle3_1: {
+      name: '중3-1',
       semesters: {
         '중3-1': [
           { title: '1. 제곱근이란?', url: 'https://youtu.be/FaP51xhNQzo' },
@@ -661,6 +672,11 @@ function App() {
             url: 'https://youtu.be/DQVSh72nG7A',
           },
         ],
+      },
+    },
+    middle3_2: {
+      name: '중3-2',
+      semesters: {
         '중3-2': [
           { title: '1. 삼각비 정의', url: 'https://youtu.be/23lplDG_nEw' },
           { title: '2. 삼각비의 값', url: 'https://youtu.be/1wJ_M0gtv-0' },
@@ -736,17 +752,31 @@ function App() {
     setSelectedVideo(null);
   };
 
-  const currentData = videoData[activeGrade];
+  const toggleSemester = (semester) => {
+    setExpandedSemester((prev) => ({
+      ...prev,
+      [semester]: !prev[semester],
+    }));
+  };
+
+  const currentData = activeGrade ? videoData[activeGrade] : null;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50">
       <div className="max-w-6xl mx-auto p-6">
         {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-800 mb-2">
-            EBS 수학 개념영상 라이브러리
+        <div className="text-center mb-12 mt-12">
+          <img
+            src="/able-logo.png"
+            alt="able Education"
+            className="mx-auto mb-4"
+            style={{ height: '35px' }}
+          />
+          <div className="w-32 h-px bg-gray-300 mx-auto mb-4"></div>
+          <h1 className="text-3xl font-bold text-gray-800 mb-2">
+            옥동 에이블 수학학원
           </h1>
-          <p className="text-gray-600">학원 학습용 개념 영상 모음</p>
+          <p className="text-gray-600">개념영상 학습 시스템</p>
         </div>
 
         {/* Grade Tabs */}
@@ -754,7 +784,10 @@ function App() {
           {Object.entries(videoData).map(([key, data]) => (
             <button
               key={key}
-              onClick={() => setActiveGrade(key)}
+              onClick={() => {
+                setActiveGrade(key);
+                setExpandedSemester({});
+              }}
               className={`px-6 py-3 rounded-lg font-semibold transition-all ${
                 activeGrade === key
                   ? 'bg-indigo-600 text-white shadow-lg'
@@ -767,29 +800,56 @@ function App() {
         </div>
 
         {/* Video Lists */}
-        <div className="space-y-6">
-          {Object.entries(currentData.semesters).map(([semester, videos]) => (
-            <div key={semester} className="bg-white rounded-lg shadow-md p-6">
-              <h2 className="text-2xl font-bold text-gray-800 mb-4 border-b-2 border-indigo-200 pb-2">
-                {semester}
-              </h2>
-              <div className="grid gap-3">
-                {videos.map((video, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => handleVideoClick(video)}
-                    className="flex items-center justify-between p-4 bg-gray-50 hover:bg-indigo-50 rounded-lg transition-colors group"
-                  >
-                    <span className="text-left text-gray-700 group-hover:text-indigo-700 font-medium">
-                      {video.title}
-                    </span>
-                    <Play className="w-5 h-5 text-indigo-600 group-hover:text-indigo-800" />
-                  </button>
-                ))}
+        {currentData && (
+          <div className="space-y-6">
+            {Object.entries(currentData.semesters).map(([semester, videos]) => (
+              <div
+                key={semester}
+                className="bg-white rounded-lg shadow-md overflow-hidden"
+              >
+                <button
+                  onClick={() => toggleSemester(semester)}
+                  className="w-full flex items-center justify-between p-6 hover:bg-gray-50 transition-colors"
+                >
+                  <h2 className="text-2xl font-bold text-gray-800">
+                    {semester}
+                  </h2>
+                  {expandedSemester[semester] ? (
+                    <ChevronUp className="w-6 h-6 text-gray-600" />
+                  ) : (
+                    <ChevronDown className="w-6 h-6 text-gray-600" />
+                  )}
+                </button>
+
+                {expandedSemester[semester] && (
+                  <div className="px-6 pb-6">
+                    <div className="border-t-2 border-indigo-200 pt-4"></div>
+                    <div className="grid gap-3">
+                      {videos.map((video, idx) => (
+                        <button
+                          key={idx}
+                          onClick={() => handleVideoClick(video)}
+                          className="flex items-center justify-between p-4 bg-gray-50 hover:bg-indigo-50 rounded-lg transition-colors group"
+                        >
+                          <span className="text-left text-gray-700 group-hover:text-indigo-700 font-medium">
+                            {video.title}
+                          </span>
+                          <Play className="w-5 h-5 text-indigo-600 group-hover:text-indigo-800" />
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
+
+        {!activeGrade && (
+          <div className="text-center py-16">
+            <p className="text-gray-500 text-lg">학년을 선택해주세요</p>
+          </div>
+        )}
       </div>
 
       {/* Video Modal */}
