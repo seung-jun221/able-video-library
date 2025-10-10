@@ -762,9 +762,9 @@ function App() {
             src="/able-logo.png"
             alt="able Education"
             className="mx-auto mb-4"
-            style={{ height: '45px' }}
+            style={{ height: '28px' }}
           />
-          <div className="w-32 h-px bg-gray-300 mx-auto mb-4"></div>
+          <div className="w-32 h-px bg-gray-300 mx-auto mb-3"></div>
           <h1 className="text-3xl font-bold text-gray-800 mb-2">
             옥동 에이블 수학학원
           </h1>
