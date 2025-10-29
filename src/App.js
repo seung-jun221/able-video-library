@@ -7,10 +7,10 @@ function App() {
   const [activeGrade, setActiveGrade] = useState(null);
 
   const videoData = {
-    elementary4: {
-      name: '초등 4학년',
+    elementary4_1: {
+      name: '초4-1',
       semesters: {
-        '1학기': [
+        '초4-1': [
           { title: '1단원 (1) 1000이 10개인 수 알아보기', url: 'https://youtu.be/J8zuOwaiF_c' },
           { title: '1단원 (2) 10000이상의 큰 수 알아보기', url: 'https://youtu.be/vO36C0K4PwY' },
           { title: '1단원 (3) 뛰어세기', url: 'https://youtu.be/xdG0HF0_IWU' },
@@ -38,7 +38,12 @@ function App() {
           { title: '6단원 (3) 규칙을 수나 식으로 나타내기', url: 'https://youtu.be/I5hWfZ7sGEY' },
           { title: '6단원 (4) 규칙적인 계산식 찾기', url: 'https://youtu.be/okZZ14UHmSY' },
         ],
-        '2학기': [
+      },
+    },
+    elementary4_2: {
+      name: '초4-2',
+      semesters: {
+        '초4-2': [
           { title: '1단원 (1) 진분수의 덧셈과 뺄셈하기', url: 'https://youtu.be/hZq_szHbLF0' },
           { title: '1단원 (2) 분수의 덧셈하기', url: 'https://youtu.be/hZq_szHbLF0' },
           { title: '1단원 (3) 분수의 뺄셈하기-1', url: 'https://youtu.be/AdogbudGLII' },
@@ -67,10 +72,10 @@ function App() {
         ],
       },
     },
-    elementary5: {
-      name: '초등 5학년',
+    elementary5_1: {
+      name: '초5-1',
       semesters: {
-        '1학기': [
+        '초5-1': [
           { title: '1단원 (1) 덧셈과 뺄셈이 섞여있는 식을 계산해 볼까요', url: 'https://youtu.be/sdQDE1b-wlY' },
           { title: '1단원 (2) 곱셈과 나눗셈이 섞여있는 식을 계산해 볼까요', url: 'https://youtu.be/AGohcA2yENg' },
           { title: '1단원 (3) 덧셈, 뺄셈, 곱셈이 섞여있는 식을 계산해 볼까요', url: 'https://youtu.be/VJAb8xFTReQ' },
@@ -100,7 +105,12 @@ function App() {
           { title: '6단원 (7) 삼각형의 넓이를 구해 볼까요', url: 'https://youtu.be/GDShVH5Fgxc' },
           { title: '6단원 (8) 마름모와 사다리꼴의 넓이 구해 볼까요', url: 'https://youtu.be/t5npK5XisCI' },
         ],
-        '2학기': [
+      },
+    },
+    elementary5_2: {
+      name: '초5-2',
+      semesters: {
+        '초5-2': [
           { title: '1단원 (1) 이상과 이하, 초과와 미만을 알아볼까요', url: 'https://youtu.be/HqSvsrpeu0M' },
           { title: '1단원 (2) 올림, 버림, 반올림을 알아볼까요', url: 'https://youtu.be/wdiVsBtEW2s' },
           { title: '2단원 (1) 분수x자연수를 알아볼까요', url: 'https://youtu.be/ppTGWwD3FPE' },
@@ -127,10 +137,10 @@ function App() {
         ],
       },
     },
-    elementary6: {
-      name: '초등 6학년',
+    elementary6_1: {
+      name: '초6-1',
       semesters: {
-        '1학기': [
+        '초6-1': [
           { title: '1단원 (1) (자연수)÷(자연수)에서 나눗셈의 몫을 분수로 나타낼 수 있어요', url: 'https://youtu.be/rqwbdgUy8sE' },
           { title: '1단원 (1) 자연수÷자연수에서 나눗셈의 몫을 분수로 나타낼 수 있어요 ①', url: 'https://youtu.be/mOpqC6S-99k' },
           { title: '1단원 (2) 자연수÷자연수에서 나눗셈의 몫을 분수로 나타낼 수 있어요 ②', url: 'https://youtu.be/xwcmkFNB5RE' },
@@ -161,7 +171,12 @@ function App() {
           { title: '6단원 (3) 직육면체와 정육면체의 부피를 구해보아요-2', url: 'https://youtu.be/JI-xCjFGCB8' },
           { title: '6단원 (4) 직육면체와 정육면체의 겉넓이를 알아보아요', url: 'https://youtu.be/JxJYzwFdvac' },
         ],
-        '2학기': [
+      },
+    },
+    elementary6_2: {
+      name: '초6-2',
+      semesters: {
+        '초6-2': [
           { title: '1단원 (1) 분수÷분수를 알아보아요-1', url: 'https://youtu.be/RhNlEMplfpY' },
           { title: '1단원 (2) 분수÷분수를 알아보아요-2', url: 'https://youtu.be/4bh962Px7ME' },
           { title: '1단원 (3) 자연수÷분수를 알아보아요', url: 'https://youtu.be/HsPx2rISgzE' },
