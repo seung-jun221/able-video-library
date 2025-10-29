@@ -4,6 +4,7 @@ import './App.css';
 
 function App() {
   const [selectedVideo, setSelectedVideo] = useState(null);
+  const [selectedLevel, setSelectedLevel] = useState(null); // 'elementary' or 'middle'
   const [activeGrade, setActiveGrade] = useState(null);
 
   const videoData = {
@@ -828,10 +829,29 @@ function App() {
     setSelectedVideo(null);
   };
 
+  const handleLevelSelect = (level) => {
+    setSelectedLevel(level);
+    setActiveGrade(null);
+  };
+
+  const handleBackToLevelSelect = () => {
+    setSelectedLevel(null);
+    setActiveGrade(null);
+  };
+
+  const getGradesByLevel = (level) => {
+    if (level === 'elementary') {
+      return ['elementary4_1', 'elementary4_2', 'elementary5_1', 'elementary5_2', 'elementary6_1', 'elementary6_2'];
+    } else if (level === 'middle') {
+      return ['middle1_1', 'middle1_2', 'middle2_1', 'middle2_2', 'middle3_1', 'middle3_2'];
+    }
+    return [];
+  };
+
   const currentData = activeGrade ? videoData[activeGrade] : null;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50">
+    <div className="min-h-screen bg-gradient-to-br from-red-50 to-gray-50">
       <div className="max-w-6xl mx-auto p-6">
         {/* Header */}
         <div className="text-center mb-12 mt-8">
@@ -848,70 +868,90 @@ function App() {
           <p className="text-gray-600 text-sm">개념영상 학습 시스템</p>
         </div>
 
-        {/* Grade Tabs */}
-        <div className="bg-white rounded-xl shadow-md p-4 mb-8">
-          <div className="flex flex-wrap justify-center gap-3">
-            {Object.entries(videoData).map(([key, data]) => (
+        {/* Step 1: Level Selection (초등/중등) */}
+        {!selectedLevel && (
+          <div className="bg-white rounded-xl shadow-md p-8 mb-8">
+            <h2 className="text-xl font-bold text-gray-800 mb-6 text-center">과정을 선택해주세요</h2>
+            <div className="flex flex-wrap justify-center gap-4">
               <button
-                key={key}
-                onClick={() => setActiveGrade(key)}
-                className={`px-5 py-2.5 rounded-lg font-medium transition-all border-2 ${
-                  activeGrade === key
-                    ? 'bg-indigo-600 text-white border-indigo-600 shadow-md'
-                    : 'bg-white text-gray-700 border-gray-200 hover:border-indigo-300 hover:bg-indigo-50'
-                }`}
+                onClick={() => handleLevelSelect('elementary')}
+                className="px-12 py-8 rounded-xl font-bold text-2xl transition-all border-3 bg-white text-gray-700 border-gray-200 hover:border-red-400 hover:bg-red-50 hover:text-red-600 shadow-lg hover:shadow-xl"
               >
-                {data.name}
+                초등과정
               </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Video Lists */}
-        {currentData && (
-          <div className="space-y-6">
-            {Object.entries(currentData.semesters).map(([semester, videos]) => (
-              <div key={semester} className="bg-white rounded-lg shadow-md p-6">
-                <h2 className="text-2xl font-bold text-gray-800 mb-4 pb-3 border-b-2 border-indigo-200">
-                  {semester}
-                </h2>
-                <div className="grid gap-3">
-                  {videos.map((video, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => handleVideoClick(video)}
-                      className="flex items-center justify-between p-4 bg-gray-50 hover:bg-indigo-50 rounded-lg transition-colors group"
-                    >
-                      <span className="text-left text-gray-700 group-hover:text-indigo-700 font-medium">
-                        {video.title}
-                      </span>
-                      <Play className="w-5 h-5 text-indigo-600 group-hover:text-indigo-800 flex-shrink-0 ml-3" />
-                    </button>
-                  ))}
-                </div>
-              </div>
-            ))}
+              <button
+                onClick={() => handleLevelSelect('middle')}
+                className="px-12 py-8 rounded-xl font-bold text-2xl transition-all border-3 bg-white text-gray-700 border-gray-200 hover:border-red-400 hover:bg-red-50 hover:text-red-600 shadow-lg hover:shadow-xl"
+              >
+                중등과정
+              </button>
+            </div>
           </div>
         )}
 
-        {!activeGrade && (
-          <div className="text-center py-20 bg-white rounded-lg shadow-md">
-            <div className="text-gray-400 mb-3">
-              <svg
-                className="w-16 h-16 mx-auto"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+        {/* Step 2: Grade Selection (학년별) */}
+        {selectedLevel && !activeGrade && (
+          <div className="bg-white rounded-xl shadow-md p-6 mb-8">
+            <div className="flex items-center justify-between mb-6">
+              <button
+                onClick={handleBackToLevelSelect}
+                className="px-4 py-2 rounded-lg font-medium text-gray-600 hover:bg-gray-100 transition-colors"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-                />
-              </svg>
+                ← 뒤로가기
+              </button>
+              <h2 className="text-xl font-bold text-gray-800">
+                {selectedLevel === 'elementary' ? '초등과정' : '중등과정'}
+              </h2>
+              <div className="w-24"></div>
             </div>
-            <p className="text-gray-500 text-lg">학년을 선택해주세요</p>
+            <div className="flex flex-wrap justify-center gap-3">
+              {getGradesByLevel(selectedLevel).map((key) => (
+                <button
+                  key={key}
+                  onClick={() => setActiveGrade(key)}
+                  className="px-6 py-3 rounded-lg font-medium transition-all border-2 bg-white text-gray-700 border-gray-200 hover:border-red-400 hover:bg-red-50 hover:text-red-600 shadow hover:shadow-md"
+                >
+                  {videoData[key].name}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Video Lists */}
+        {currentData && (
+          <div>
+            <div className="mb-4">
+              <button
+                onClick={() => setActiveGrade(null)}
+                className="px-4 py-2 rounded-lg font-medium text-gray-600 hover:bg-gray-100 transition-colors"
+              >
+                ← 학년 선택으로 돌아가기
+              </button>
+            </div>
+            <div className="space-y-6">
+              {Object.entries(currentData.semesters).map(([semester, videos]) => (
+                <div key={semester} className="bg-white rounded-lg shadow-md p-6">
+                  <h2 className="text-2xl font-bold text-gray-800 mb-4 pb-3 border-b-2 border-red-200">
+                    {semester}
+                  </h2>
+                  <div className="grid gap-3">
+                    {videos.map((video, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => handleVideoClick(video)}
+                        className="flex items-center justify-between p-4 bg-gray-50 hover:bg-red-50 rounded-lg transition-colors group"
+                      >
+                        <span className="text-left text-gray-700 group-hover:text-red-600 font-medium">
+                          {video.title}
+                        </span>
+                        <Play className="w-5 h-5 text-red-600 group-hover:text-red-700 flex-shrink-0 ml-3" />
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         )}
       </div>
